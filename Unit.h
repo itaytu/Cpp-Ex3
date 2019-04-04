@@ -9,17 +9,17 @@
 
 namespace ariel{
     enum class Unit: int {
-        KM,
-        M,
-        CM,
+        KM,    //0mod3
+        HOUR,  //1mod3
+        TON,   //2mod3
 
-        HOUR,
-        MIN,
-        SEC,
+        M,     //0mod3
+        MIN,   //1mod3
+        KG,    //2mod3
 
-        TON,
-        KG,
-        G
+        CM,    //0mod3
+        SEC,   //1mod3
+        G      //2mod3
     };
 };
 

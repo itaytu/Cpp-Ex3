@@ -1,10 +1,3 @@
-/**
- * Demo file for the exercise on physical numbers
- *
- * @author Erel Segal-Halevi
- * @since 2019-02
- *//*
-
 
 #include <iostream>
 #include <sstream>
@@ -44,4 +37,3 @@ int main() {
   }
   return 100;
 }
-*/

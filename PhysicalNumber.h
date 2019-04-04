@@ -19,7 +19,7 @@ namespace ariel {
 //        }
 
         friend std::ostream& operator<<(std::ostream& os, const PhysicalNumber& c);
-        friend const PhysicalNumber operator+ (const PhysicalNumber& c1, const PhysicalNumber& c2);
+        friend const PhysicalNumber operator+ (const PhysicalNumber& pn1, const PhysicalNumber& pn2);
 
     };
 };
