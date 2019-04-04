@@ -9,7 +9,20 @@ using namespace ariel;
 
 PhysicalNumber::PhysicalNumber(double num, Unit unit) {
     this -> unit = unit;
-    this -> value = num;
+    double tmp;
+    switch (unit){
+        case Unit::KM : tmp = num*1000*100; break;
+        case Unit::M : tmp = num*100; break;
+        case Unit::CM : tmp = num; break;
+        case Unit::TON : tmp = num*1000*1000; break;
+        case Unit::KG : tmp = num*1000; break;
+        case Unit::G : tmp = num; break;
+        case Unit::HOUR : tmp = num*60*60; break;
+        case Unit::MIN : tmp = num*60; break;
+        case Unit::SEC : tmp = num; break;
+        default: throw ("Invalid input");
+    }
+    this -> value = tmp;
 }
 
 std::ostream &ariel::operator<<(std::ostream &os, const PhysicalNumber &c) {
@@ -31,7 +44,21 @@ std::ostream &ariel::operator<<(std::ostream &os, const PhysicalNumber &c) {
 }
 
 const ariel::PhysicalNumber ariel::operator+(const ariel::PhysicalNumber &c1, const ariel::PhysicalNumber &c2) {
+    double tmp;
+    Unit unit;
+    if((int)c1.unit%3 == (int)c2.unit%3) {
+        if((int)c1.unit%3 == 0) {
+            c1.value + c2.value
+        }
+        else if((int)c1.unit%3 == 1) {
 
+        }
+        else {
+
+        }
+    }
+    else
+        throw "Invalid operation";
 }
 
 //const ariel::PhysicalNumber ariel::operator+(const ariel::PhysicalNumber &p1, const ariel::PhysicalNumber &p2) {
