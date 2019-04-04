@@ -51,8 +51,8 @@ const ariel::PhysicalNumber ariel::operator+(const ariel::PhysicalNumber &c1, co
     PhysicalNumber tmp1 = PhysicalNumber::convert(c1);
     PhysicalNumber tmp2 = PhysicalNumber::convert(c2);
 
-    double tmp = tmp1.value + tmp2.value;
     if((int)tmp1.unit%3 == (int)tmp2.unit%3) {
+        double tmp = tmp1.value + tmp2.value;
         if((int)tmp1.unit%3 == 0) {
            switch (c1.unit){
                case Unit::KM : tmp = tmp/(1000*100); break;
@@ -60,7 +60,7 @@ const ariel::PhysicalNumber ariel::operator+(const ariel::PhysicalNumber &c1, co
                case Unit::CM : tmp = tmp; break;
            }
         }
-        else if((int)tmp1.unit%3 == 1) {
+        else if((int)tmp1.unit%3 == 2) {
             switch (c1.unit){
                 case Unit::TON : tmp = tmp/(1000*1000); break;
                 case Unit::KG : tmp = tmp/1000; break;
@@ -115,6 +115,60 @@ const PhysicalNumber ariel::operator-(const PhysicalNumber &pn1) {
 
 const PhysicalNumber ariel::operator+(const PhysicalNumber &pn1) {
     return pn1;
+}
+
+const PhysicalNumber &ariel::operator+=(PhysicalNumber &pn1, const PhysicalNumber &pn2) {
+    PhysicalNumber temp=pn1+pn2;
+    pn1=temp;
+    return pn1;
+}
+
+const PhysicalNumber &ariel::operator-=(PhysicalNumber &pn1, const PhysicalNumber &pn2) {
+    PhysicalNumber temp=pn1-pn2;
+    pn1=temp;
+    return pn1;
+}
+
+const PhysicalNumber ariel::operator++(PhysicalNumber &pn1) {
+    pn1.value=pn1.value+1;
+    return pn1;
+}
+
+const PhysicalNumber ariel::operator++(PhysicalNumber &pn1, int) {
+    return ++pn1;
+}
+
+const PhysicalNumber ariel::operator--(PhysicalNumber &pn1) {
+    pn1.value=pn1.value-1;
+    return pn1;
+}
+
+const PhysicalNumber ariel::operator--(PhysicalNumber &pn1, int) {
+    return --pn1;
+}
+
+const bool ariel::operator!=(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
+    return 0;
+}
+
+const bool ariel::operator==(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
+    return 0;
+}
+
+const bool ariel::operator>=(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
+    return 0;
+}
+
+const bool ariel::operator>(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
+    return 0;
+}
+
+const bool ariel::operator<=(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
+    return 0;
+}
+
+const bool ariel::operator<(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
+    return 0;
 }
 
 using namespace std;
