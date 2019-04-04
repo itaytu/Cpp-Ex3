@@ -14,8 +14,8 @@ int main() {
     cout << a << endl;   // Prints "2[km]"
     cout << (a+b) << endl;   // Prints "2.3[km]"
     cout << (b-a) << endl;   // Prints "-1700[m]"
-    cout << (-a) << endl;   // Prints "-2[km]"
-
+    cout << (-a) << endl;   // Prints "-2[km]"'
+/*
     cout << boolalpha; // print booleans as strings from now on:
     cout << (a>b) << endl;  // Prints "true"
     cout << (a<=b) << endl;  // Prints "false"
@@ -31,7 +31,7 @@ int main() {
       cout << (a+b) << endl;  
     } catch (const std::exception& ex) {
       cout << ex.what() << endl; // Prints "Units do not match - [m] cannot be converted to [kg]"
-    }
+    }*/
   } catch (...) {
     cout << "Unexpected exception!" << endl;
   }
