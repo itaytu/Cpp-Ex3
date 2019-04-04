@@ -15,19 +15,32 @@ namespace ariel {
         PhysicalNumber(double num, Unit unit);
         static PhysicalNumber convert(PhysicalNumber pn);
 
-//        const Complex operator+(const Complex& c1, const Complex& c2) {
-//            return Complex(c1._re + c2._re, c1._im + c2._im);
-//        }
-
         friend std::ostream& operator<<(std::ostream& os, const PhysicalNumber& c);
 
         friend const PhysicalNumber operator+ (const PhysicalNumber& pn1, const PhysicalNumber& pn2);
-
         friend const PhysicalNumber operator+ (const PhysicalNumber& pn1);
 
-        friend const PhysicalNumber operator- (const PhysicalNumber& pn1, const PhysicalNumber& pn2);
+        friend const PhysicalNumber& operator+= (PhysicalNumber& pn1,const PhysicalNumber& pn2);
 
+        friend const PhysicalNumber operator++ ( PhysicalNumber& pn1);
+        friend const PhysicalNumber operator++ ( PhysicalNumber& pn1,int);
+
+
+        friend const PhysicalNumber operator- (const PhysicalNumber& pn1, const PhysicalNumber& pn2);
         friend const PhysicalNumber operator- (const PhysicalNumber& pn1);
+
+        friend const PhysicalNumber& operator-= (PhysicalNumber& pn1,const PhysicalNumber& pn2);
+
+        friend const PhysicalNumber operator-- ( PhysicalNumber& pn1);
+        friend const PhysicalNumber operator-- ( PhysicalNumber& pn1,int);
+
+        friend const bool operator< (const PhysicalNumber& pn1, const PhysicalNumber& pn2);
+        friend const bool operator<= (const PhysicalNumber& pn1, const PhysicalNumber& pn2);
+        friend const bool operator> (const PhysicalNumber& pn1, const PhysicalNumber& pn2);
+        friend const bool operator>= (const PhysicalNumber& pn1, const PhysicalNumber& pn2);
+        friend const bool operator== (const PhysicalNumber& pn1, const PhysicalNumber& pn2);
+        friend const bool operator!= (const PhysicalNumber& pn1, const PhysicalNumber& pn2);
+
 
     };
 };
