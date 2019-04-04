@@ -19,12 +19,12 @@ int main() {
     //cout << (c -= PhysicalNumber(1, Unit::TON)) << endl;  // prints "1700[kg]"
     cout<<c++<<endl;
       cout<<(c)<<endl;
-/*
+
     cout << boolalpha; // print booleans as strings from now on:
     cout << (a>b) << endl;  // Prints "true"
-    cout << (a<=b) << endl;  // Prints "false"
-    cout << (a==PhysicalNumber(2000, Unit::M)) << endl;  // Prints "true"
-
+   cout << (a<=b) << endl;  // Prints "false"
+   cout << (a==PhysicalNumber(2000, Unit::M)) << endl;  // Prints "true"
+ /*
     istringstream input("700[kg]");
     input >> a;
     cout << a << endl;   // Prints "700[kg]"

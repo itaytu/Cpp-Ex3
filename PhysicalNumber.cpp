@@ -50,9 +50,9 @@ std::ostream &ariel::operator<<(std::ostream &os, const PhysicalNumber &c) {
 const ariel::PhysicalNumber ariel::operator+(const ariel::PhysicalNumber &c1, const ariel::PhysicalNumber &c2) {
     PhysicalNumber tmp1 = PhysicalNumber::convert(c1);
     PhysicalNumber tmp2 = PhysicalNumber::convert(c2);
-
+    double tmp;
     if((int)tmp1.unit%3 == (int)tmp2.unit%3) {
-        double tmp = tmp1.value + tmp2.value;
+        tmp = tmp1.value + tmp2.value;
         if((int)tmp1.unit%3 == 0) {
            switch (c1.unit){
                case Unit::KM : tmp = tmp/(1000*100); break;
@@ -148,27 +148,40 @@ const PhysicalNumber ariel::operator--(PhysicalNumber &pn1, int) {
 }
 
 const bool ariel::operator!=(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
-    return 0;
+    return (!(pn1==pn2));
 }
 
 const bool ariel::operator==(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
-    return 0;
+
+    PhysicalNumber tmp1 = PhysicalNumber::convert(pn1);
+    PhysicalNumber tmp2 = PhysicalNumber::convert(pn2);
+
+    if((int)tmp1.unit%3 == (int)tmp2.unit%3){
+        if (tmp1.value==tmp2.value) return true;
+    } else throw "Invalid input";
+    return false;
 }
 
 const bool ariel::operator>=(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
-    return 0;
+    return (pn1>pn2||pn1==pn2);
 }
 
 const bool ariel::operator>(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
-    return 0;
+    PhysicalNumber tmp1 = PhysicalNumber::convert(pn1);
+    PhysicalNumber tmp2 = PhysicalNumber::convert(pn2);
+
+    if((int)tmp1.unit%3 == (int)tmp2.unit%3){
+        if (tmp1.value>tmp2.value) return true;
+    } else throw "Invalid input";
+    return false;
 }
 
 const bool ariel::operator<=(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
-    return 0;
+    return (pn2>=pn1);
 }
 
 const bool ariel::operator<(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
-    return 0;
+    return (pn2>pn1);
 }
 
 using namespace std;
