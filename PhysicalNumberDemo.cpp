@@ -34,7 +34,9 @@ int main() {
       cout << (a+b) << endl;  
     } catch (const std::exception& ex) {
       cout << ex.what() << endl; // Prints "Units do not match - [m] cannot be converted to [kg]"
-    } /**/
+    }
+
+
   } catch (...) {
     cout << "Unexpected exception!" << endl;
   }
