@@ -1,7 +1,3 @@
-//
-// Created by moshe on 02/04/2019.
-//
-
 #ifndef PROJECT3_UNIT_H
 #define PROJECT3_UNIT_H
 
@@ -22,7 +18,5 @@ namespace ariel{
         G      //2mod3
     };
 };
-
-
 
 #endif //PROJECT3_UNIT_H
