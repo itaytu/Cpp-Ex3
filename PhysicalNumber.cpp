@@ -7,11 +7,13 @@
 using namespace std;
 using namespace ariel;
 
+//Constructor
 PhysicalNumber::PhysicalNumber(double num, Unit unit) {
     this -> unit = unit;
     this->value = num;
 }
 
+//Output operator
 ostream &ariel::operator<<(ostream &os, const PhysicalNumber &c) {
     string output;
     switch (c.unit){
@@ -29,6 +31,7 @@ ostream &ariel::operator<<(ostream &os, const PhysicalNumber &c) {
     return os << c.value << output;
 }
 
+//Input operator
 istream &ariel::operator>>(istream &in, PhysicalNumber &c) {
     string tmp;
     in >> tmp;
@@ -58,6 +61,29 @@ istream &ariel::operator>>(istream &in, PhysicalNumber &c) {
     return in;
 }
 
+//Helper function to convert units to the same unit
+PhysicalNumber PhysicalNumber::convert(PhysicalNumber pn) {
+    double tmp;
+    switch (pn.unit){
+        case Unit::KM : tmp = pn.value*1000*100; pn.unit= Unit::CM; break;
+        case Unit::M : tmp = pn.value*100; pn.unit= Unit::CM; break;
+        case Unit::CM : tmp = pn.value; break;
+
+        case Unit::TON : tmp = pn.value*1000*1000; pn.unit= Unit::G; break;
+        case Unit::KG : tmp = pn.value*1000; pn.unit= Unit::G; break;
+        case Unit::G : tmp = pn.value; break;
+
+        case Unit::HOUR : tmp = pn.value*60*60; pn.unit= Unit::SEC; break;
+        case Unit::MIN : tmp = pn.value*60; pn.unit= Unit::SEC; break;
+        case Unit::SEC : tmp = pn.value; break;
+
+        default: throw ("Invalid input");
+    }
+    pn.value = tmp;
+    return pn;
+}
+
+//Plus operator
 const ariel::PhysicalNumber ariel::operator+(const ariel::PhysicalNumber &c1, const ariel::PhysicalNumber &c2) {
     PhysicalNumber tmp1 = PhysicalNumber::convert(c1);
     PhysicalNumber tmp2 = PhysicalNumber::convert(c2);
@@ -91,27 +117,11 @@ const ariel::PhysicalNumber ariel::operator+(const ariel::PhysicalNumber &c1, co
     return  PhysicalNumber(tmp,  c1.unit);
 }
 
-PhysicalNumber PhysicalNumber::convert(PhysicalNumber pn) {
-    double tmp;
-    switch (pn.unit){
-        case Unit::KM : tmp = pn.value*1000*100; pn.unit= Unit::CM; break;
-        case Unit::M : tmp = pn.value*100; pn.unit= Unit::CM; break;
-        case Unit::CM : tmp = pn.value; break;
-
-        case Unit::TON : tmp = pn.value*1000*1000; pn.unit= Unit::G; break;
-        case Unit::KG : tmp = pn.value*1000; pn.unit= Unit::G; break;
-        case Unit::G : tmp = pn.value; break;
-
-        case Unit::HOUR : tmp = pn.value*60*60; pn.unit= Unit::SEC; break;
-        case Unit::MIN : tmp = pn.value*60; pn.unit= Unit::SEC; break;
-        case Unit::SEC : tmp = pn.value; break;
-
-        default: throw ("Invalid input");
-    }
-    pn.value = tmp;
-    return pn;
+const PhysicalNumber ariel::operator+(const PhysicalNumber &pn1) {
+    return pn1;
 }
 
+//Minus operator
 const PhysicalNumber ariel::operator-(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
     PhysicalNumber tmp = pn2;
     tmp.value = -tmp.value;
@@ -124,10 +134,7 @@ const PhysicalNumber ariel::operator-(const PhysicalNumber &pn1) {
     return tmp;
 }
 
-const PhysicalNumber ariel::operator+(const PhysicalNumber &pn1) {
-    return pn1;
-}
-
+//Assignment operators
 const PhysicalNumber &ariel::operator+=(PhysicalNumber &pn1, const PhysicalNumber &pn2) {
     PhysicalNumber temp=pn1+pn2;
     pn1=temp;
@@ -140,6 +147,7 @@ const PhysicalNumber &ariel::operator-=(PhysicalNumber &pn1, const PhysicalNumbe
     return pn1;
 }
 
+//Unary operators
 const PhysicalNumber ariel::operator++(PhysicalNumber &pn1) {
     pn1.value=pn1.value+1;
     return pn1;
@@ -158,6 +166,7 @@ const PhysicalNumber ariel::operator--(PhysicalNumber &pn1, int) {
     return --pn1;
 }
 
+//Relational operators
 const bool ariel::operator!=(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
     return (!(pn1==pn2));
 }
