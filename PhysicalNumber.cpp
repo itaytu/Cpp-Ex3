@@ -15,15 +15,15 @@ PhysicalNumber::PhysicalNumber(double num, Unit unit) {
 ostream &ariel::operator<<(ostream &os, const PhysicalNumber &c) {
     string output;
     switch (c.unit){
-        case Unit::KM : output = "[KM]"; break;
-        case Unit::M : output = "[M]"; break;
-        case Unit::CM : output = "[CM]"; break;
-        case Unit::TON : output = "[TON]"; break;
-        case Unit::KG : output = "[KG]"; break;
-        case Unit::G : output = "[G]"; break;
-        case Unit::HOUR : output = "[HOUR]"; break;
-        case Unit::MIN : output = "[MIN]"; break;
-        case Unit::SEC : output = "[SEC]"; break;
+        case Unit::KM : output = "[km]"; break;
+        case Unit::M : output = "[m]"; break;
+        case Unit::CM : output = "[cm]"; break;
+        case Unit::TON : output = "[ton]"; break;
+        case Unit::KG : output = "[kg]"; break;
+        case Unit::G : output = "[g]"; break;
+        case Unit::HOUR : output = "[hour]"; break;
+        case Unit::MIN : output = "[min]"; break;
+        case Unit::SEC : output = "[sec]"; break;
         default: throw ("Invalid input");
     }
     return os << c.value << output;
