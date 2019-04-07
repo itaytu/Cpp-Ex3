@@ -23,6 +23,13 @@ int main() {
     PhysicalNumber b(300, Unit::M);
     PhysicalNumber c(2, Unit::HOUR);
     PhysicalNumber d(30, Unit::MIN);
+    //
+    PhysicalNumber e(75, Unit::KG);
+    PhysicalNumber f(2000, Unit::G);
+    PhysicalNumber g(3100, Unit::CM);
+    PhysicalNumber h(100, Unit::SEC);
+    PhysicalNumber i(101, Unit::SEC);
+
 
     testcase
     .setname("Basic output")
@@ -52,6 +59,39 @@ int main() {
     // YOUR TESTS - INSERT AS MANY AS YOU WANT
 
       .setname("...")
+      .CHECK_OUTPUT(e+f, "77[kg]")
+      .CHECK_OUTPUT(f+e, "77000[g]")
+      .CHECK_OUTPUT(b+g, "331[m]")
+      .CHECK_OUTPUT(g+b, "33100[cm]")
+      .CHECK_OUTPUT(h+d, "1900[sec]")
+      .CHECK_OUTPUT(h++, "101[sec]")
+      .CHECK_OUTPUT(g--, "3099[cm]")
+      .CHECK_OUTPUT((e+=f), "77[kg]")
+      .CHECK_OUTPUT(e, "77[kg]")
+      .CHECK_OUTPUT((f-=e), "-75000[g]")
+      .CHECK_OUTPUT((e>f), "1")
+      .CHECK_OUTPUT((e<f), "0")
+      .CHECK_OUTPUT((e<=f), "0")
+      .CHECK_OUTPUT((e<=e), "1")
+      .CHECK_OUTPUT((e<=e), "1")
+      .CHECK_OUTPUT((h==i), "1")
+      .CHECK_OUTPUT((c!=d), "1")
+
+      .CHECK_OK(istringstream("1[hour]") >> d)
+
+
+      .CHECK_THROWS(a+d)
+      .CHECK_THROWS(f+g)
+      .CHECK_THROWS(istringstream("1[hour") >> d)
+      .CHECK_THROWS(istringstream("1[hours]") >> d)
+      .CHECK_THROWS(a==d)
+      .CHECK_THROWS(g<=h)
+      .CHECK_THROWS(b>d)
+
+
+
+
+
 
       .print(cout, /*show_grade=*/false);
       grade = testcase.grade();
