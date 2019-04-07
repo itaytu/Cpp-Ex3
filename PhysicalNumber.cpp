@@ -1,50 +1,61 @@
-//
-// Created by moshe on 02/04/2019.
-//
-
 #include "PhysicalNumber.h"
-#include "iostream"
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <exception>
 
+using namespace std;
 using namespace ariel;
 
 PhysicalNumber::PhysicalNumber(double num, Unit unit) {
     this -> unit = unit;
     this->value = num;
-   /* double tmp;
-    switch (unit){
-        case Unit::KM : tmp = num*1000*100; break;
-        case Unit::M : tmp = num*100; break;
-        case Unit::CM : tmp = num; break;
-
-        case Unit::TON : tmp = num*1000*1000; break;
-        case Unit::KG : tmp = num*1000; break;
-        case Unit::G : tmp = num; break;
-
-        case Unit::HOUR : tmp = num*60*60; break;
-        case Unit::MIN : tmp = num*60; break;
-        case Unit::SEC : tmp = num; break;
-
-        default: throw ("Invalid input");
-    }
-    this -> value = tmp;*/
 }
 
-std::ostream &ariel::operator<<(std::ostream &os, const PhysicalNumber &c) {
-
-    std::string output;
+ostream &ariel::operator<<(ostream &os, const PhysicalNumber &c) {
+    string output;
     switch (c.unit){
-        case Unit::KM : output = "KM"; break;
-        case Unit::M : output = "M"; break;
-        case Unit::CM : output = "CM"; break;
-        case Unit::TON : output = "TON"; break;
-        case Unit::KG : output = "KG"; break;
-        case Unit::G : output = "G"; break;
-        case Unit::HOUR : output = "HOUR"; break;
-        case Unit::MIN : output = "MIN"; break;
-        case Unit::SEC : output = "SEC"; break;
+        case Unit::KM : output = "[KM]"; break;
+        case Unit::M : output = "[M]"; break;
+        case Unit::CM : output = "[CM]"; break;
+        case Unit::TON : output = "[TON]"; break;
+        case Unit::KG : output = "[KG]"; break;
+        case Unit::G : output = "[G]"; break;
+        case Unit::HOUR : output = "[HOUR]"; break;
+        case Unit::MIN : output = "[MIN]"; break;
+        case Unit::SEC : output = "[SEC]"; break;
         default: throw ("Invalid input");
     }
     return os << c.value << output;
+}
+
+istream &ariel::operator>>(istream &in, PhysicalNumber &c) {
+    string tmp;
+    in >> tmp;
+    size_t index = tmp.find_first_of('[');
+    if(index == string::npos) {
+        throw "Invalid input";
+    }
+    string value = tmp.substr(0, index);
+    string unit = tmp.substr(index, tmp.length());
+    transform(unit.begin(), unit.end(), unit.begin(), ::tolower);
+    c.value = stod(value);
+
+    if(unit.compare("[km]") == 0 ) c.unit = Unit::KM;
+    else if(unit.compare("[m]") == 0 ) c.unit = Unit::M;
+    else if(unit.compare("[cm]") == 0 ) c.unit = Unit::CM;
+
+    else if(unit.compare("[ton]") == 0 ) c.unit = Unit::TON;
+    else if(unit.compare("[kg]") == 0 ) c.unit = Unit::KG;
+    else if(unit.compare("[g]") == 0 ) c.unit = Unit::G;
+
+    else if(unit.compare("[hour]") == 0 ) c.unit = Unit::HOUR;
+    else if(unit.compare("[min]") == 0 ) c.unit = Unit::MIN;
+    else if(unit.compare("[sec]") == 0) c.unit = Unit::SEC;
+
+    else throw "Invalid Unit";
+
+    return in;
 }
 
 const ariel::PhysicalNumber ariel::operator+(const ariel::PhysicalNumber &c1, const ariel::PhysicalNumber &c2) {
@@ -54,24 +65,24 @@ const ariel::PhysicalNumber ariel::operator+(const ariel::PhysicalNumber &c1, co
     if((int)tmp1.unit%3 == (int)tmp2.unit%3) {
         tmp = tmp1.value + tmp2.value;
         if((int)tmp1.unit%3 == 0) {
-           switch (c1.unit){
-               case Unit::KM : tmp = tmp/(1000*100); break;
-               case Unit::M : tmp = tmp/100; break;
-               case Unit::CM : tmp = tmp; break;
-           }
+            switch (c1.unit){
+                case Unit::KM : tmp = tmp/(1000*100); break;
+                case Unit::M : tmp = tmp/100; break;
+                case Unit::CM : break;
+            }
         }
         else if((int)tmp1.unit%3 == 2) {
             switch (c1.unit){
                 case Unit::TON : tmp = tmp/(1000*1000); break;
                 case Unit::KG : tmp = tmp/1000; break;
-                case Unit::G : tmp = tmp; break;
+                case Unit::G : break;
             }
         }
         else {
             switch (c1.unit){
                 case Unit::HOUR : tmp = tmp/(60*60); break;
                 case Unit::MIN : tmp = tmp/60; break;
-                case Unit::SEC : tmp = tmp; break;
+                case Unit::SEC : break;
             }
         }
     }
@@ -184,5 +195,5 @@ const bool ariel::operator<(const PhysicalNumber &pn1, const PhysicalNumber &pn2
     return (pn2>pn1);
 }
 
-using namespace std;
+
 
