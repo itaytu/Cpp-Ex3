@@ -14,10 +14,7 @@ int main() {
     cout << (a+b) << endl;   // Prints "2.3[km]"
     cout << (b-a) << endl;   // Prints "-1700[m]"
     cout << (-a) << endl;   // Prints "-2[km]"'
-    PhysicalNumber c(700, Unit::KG);   // 2 kilometers
-    cout << (c -= PhysicalNumber(1, Unit::TON)) << endl;  // prints "1700[kg]"
-    cout<<c++<<endl;
-      cout<<(c)<<endl;
+
 
     cout << boolalpha; // print booleans as strings from now on:
     cout << (a>b) << endl;  // Prints "true"
@@ -27,7 +24,7 @@ int main() {
     istringstream input("700[kG]");
     input >> a;
     cout << a << endl;   // Prints "700[kg]"
-   cout << (a += PhysicalNumber(1, Unit::TON)) << endl;  // prints "1700[kg]"
+   cout <<(a += PhysicalNumber(1, Unit::TON)) << endl;  // prints "1700[kg]"
     cout << a << endl;   // Prints "1700[kg]" since a has changed.
 
     try {
@@ -35,7 +32,6 @@ int main() {
     } catch (const std::exception& ex) {
       cout << ex.what() << endl; // Prints "Units do not match - [m] cannot be converted to [kg]"
     }
-
 
   } catch (...) {
     cout << "Unexpected exception!" << endl;

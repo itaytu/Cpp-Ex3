@@ -17,6 +17,6 @@ namespace ariel{
         SEC,   //1mod3
         G      //2mod3
     };
-};
+}
 
 #endif //PROJECT3_UNIT_H

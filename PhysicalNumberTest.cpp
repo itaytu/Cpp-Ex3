@@ -5,6 +5,7 @@
  * @since 2019-02
  */
 
+
 #include <iostream>
 #include <sstream>
 using std::cout, std::endl, std::istringstream;
@@ -64,8 +65,8 @@ int main() {
       .CHECK_OUTPUT(b+g, "331[m]")
       .CHECK_OUTPUT(g+b, "33100[cm]")
       .CHECK_OUTPUT(h+d, "1900[sec]")
-      .CHECK_OUTPUT(h++, "101[sec]")
-      .CHECK_OUTPUT(g--, "3099[cm]")
+      .CHECK_OUTPUT(++h, "101[sec]")
+      .CHECK_OUTPUT(--g, "3099[cm]")
       .CHECK_OUTPUT((e+=f), "77[kg]")
       .CHECK_OUTPUT(e, "77[kg]")
       .CHECK_OUTPUT((f-=e), "-75000[g]")
@@ -93,7 +94,9 @@ int main() {
 
 
 
-      .print(cout, /*show_grade=*/false);
+      .print(cout,
+/*show_grade=*/
+false);
       grade = testcase.grade();
     } else {
       testcase.print_signal(signal);
@@ -102,3 +105,4 @@ int main() {
     cout <<  "*** Grade: " << grade << " ***" << endl;
     return grade;
 }
+
