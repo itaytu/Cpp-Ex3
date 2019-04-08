@@ -123,12 +123,12 @@ const PhysicalNumber PhysicalNumber::operator+=(const PhysicalNumber &pn1) {
     return *this;
 }
 
-const PhysicalNumber PhysicalNumber::operator++() {
+PhysicalNumber& PhysicalNumber::operator++() {
     value++;
     return *this;
 }
 
-const PhysicalNumber PhysicalNumber::operator++(int) {
+PhysicalNumber& PhysicalNumber::operator++(int) {
     PhysicalNumber copy = *this;
     value++;
     return copy;
