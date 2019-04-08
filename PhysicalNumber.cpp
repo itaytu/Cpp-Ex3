@@ -7,13 +7,24 @@
 using namespace std;
 using namespace ariel;
 
-//Constructor
+using namespace std;
+
+const char* units[]={"[km]","[hour]","[ton]","[m]","[min]","[kg]","[cm]","[sec]","[g]"};
+
+//---------------------CONSTRUCTOR-----------------------
+PhysicalNumber::PhysicalNumber(const PhysicalNumber &pn) {
+    this->value = pn.value;
+    this->unit = pn.unit;
+}
+
+//---------------------COPY CONSTRUCTOR-------------------
 PhysicalNumber::PhysicalNumber(double num, Unit unit) {
     this -> unit = unit;
     this->value = num;
 }
 
-//Output operator
+
+//-----------------------OUTPUT OPERATOR------------------------------
 ostream &ariel::operator<<(ostream &os, const PhysicalNumber &c) {
     string output;
     switch (c.unit){
@@ -31,7 +42,7 @@ ostream &ariel::operator<<(ostream &os, const PhysicalNumber &c) {
     return os << c.value << output;
 }
 
-//Input operator
+//-----------------------INPUT OPERATOR------------------------------
 istream &ariel::operator>>(istream &in, PhysicalNumber &c) {
     string tmp;
     in >> tmp;
@@ -61,7 +72,148 @@ istream &ariel::operator>>(istream &in, PhysicalNumber &c) {
     return in;
 }
 
-//Helper function to convert units to the same unit
+//-----------------------PLUS OPERATOR------------------------------
+const ariel::PhysicalNumber PhysicalNumber::operator+(const ariel::PhysicalNumber &c1){
+    PhysicalNumber tmp1 = PhysicalNumber::convert(*this);
+    PhysicalNumber tmp2 = PhysicalNumber::convert(c1);
+    double tmp;
+    if((int)tmp1.unit%3 == (int)tmp2.unit%3) {
+        tmp = tmp1.value + tmp2.value;
+        if((int)tmp1.unit%3 == 0) {
+            switch (this->unit){
+                case Unit::KM : tmp = tmp/(1000*100); break;
+                case Unit::M : tmp = tmp/100; break;
+                case Unit::CM : break;
+            }
+        }
+        else if((int)tmp1.unit%3 == 2) {
+            switch (this->unit){
+                case Unit::TON : tmp = tmp/(1000*1000); break;
+                case Unit::KG : tmp = tmp/1000; break;
+                case Unit::G : break;
+            }
+        }
+        else {
+            switch (this->unit){
+                case Unit::HOUR : tmp = tmp/(60*60); break;
+                case Unit::MIN : tmp = tmp/60; break;
+                case Unit::SEC : break;
+            }
+        }
+    }
+    else {
+        string s = "Units do not match - " ;
+        s.append(units[(int) unit]);
+        string s2 = " cannot be converted to ";
+        s2.append(units[(int) c1.unit]);
+        throw std::invalid_argument(s.append(s2));
+    }
+    PhysicalNumber a(tmp,this->unit);
+    return (a);
+
+}
+
+//-----------------------UNARY AND BINARY OPERATORS------------------------------
+const PhysicalNumber PhysicalNumber::operator+() {
+    return *this;
+}
+
+const PhysicalNumber PhysicalNumber::operator+=(const PhysicalNumber &pn1) {
+    *this=*this+pn1;
+    return *this;
+}
+
+const PhysicalNumber PhysicalNumber::operator++() {
+    value++;
+    return *this;
+}
+
+const PhysicalNumber PhysicalNumber::operator++(int) {
+    PhysicalNumber copy = *this;
+    value++;
+    return copy;
+}
+
+const PhysicalNumber PhysicalNumber::operator-(const PhysicalNumber &pn1) {
+    PhysicalNumber tmp = pn1;
+    tmp.value = -tmp.value;
+    return *this+tmp;
+}
+
+const PhysicalNumber PhysicalNumber::operator-() {
+    return PhysicalNumber(-(this->value),this->unit);
+}
+
+const PhysicalNumber PhysicalNumber::operator-=(const PhysicalNumber &pn1) {
+    *this=*this-pn1;
+    return *this;
+}
+
+const PhysicalNumber PhysicalNumber::operator--() {
+    value--;
+    return *this;
+}
+
+const PhysicalNumber PhysicalNumber::operator--(int) {
+    PhysicalNumber copy = *this;
+    value--;
+    return copy;
+}
+
+//-----------------------COMPARISON OPERATORS------------------------------
+const bool ariel::operator!=(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
+    return (!(pn1==pn2));
+}
+
+const bool ariel::operator==(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
+
+    PhysicalNumber tmp1 = PhysicalNumber::convert(pn1);
+    PhysicalNumber tmp2 = PhysicalNumber::convert(pn2);
+
+    if((int)tmp1.unit%3 == (int)tmp2.unit%3){
+        if (tmp1.value==tmp2.value) return true;
+    } else {
+        string s = "Units do not match - " ;
+        s.append(units[(int) pn1.unit]);
+        string s2 = " cannot be converted to ";
+        s2.append(units[(int) pn2.unit]);
+        throw std::invalid_argument(s.append(s2));
+    }
+    return false;
+}
+
+const bool ariel::operator>=(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
+    return (pn1>pn2||pn1==pn2);
+}
+
+const bool ariel::operator>(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
+    PhysicalNumber tmp1 = PhysicalNumber::convert(pn1);
+    PhysicalNumber tmp2 = PhysicalNumber::convert(pn2);
+
+    if((int)tmp1.unit%3 == (int)tmp2.unit%3){
+        if (tmp1.value>tmp2.value) return true;
+    } else {
+        string s = "Units do not match - " ;
+        s.append(units[(int) pn1.unit]);
+        string s2 = " cannot be converted to ";
+        s2.append(units[(int) pn2.unit]);
+        throw std::invalid_argument(s.append(s2));
+    }
+    return false;
+}
+
+const bool ariel::operator<=(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
+    return (pn2>=pn1);
+}
+
+const bool ariel::operator<(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
+    return (pn2>pn1);
+}
+
+
+
+
+//-----------------------FUNCTION TO CONVERT UNITS------------------------------
 PhysicalNumber PhysicalNumber::convert(PhysicalNumber pn) {
     double tmp;
     switch (pn.unit){
@@ -83,126 +235,10 @@ PhysicalNumber PhysicalNumber::convert(PhysicalNumber pn) {
     return pn;
 }
 
-//Plus operator
-const ariel::PhysicalNumber ariel::operator+(const ariel::PhysicalNumber &c1, const ariel::PhysicalNumber &c2) {
-    PhysicalNumber tmp1 = PhysicalNumber::convert(c1);
-    PhysicalNumber tmp2 = PhysicalNumber::convert(c2);
-    double tmp;
-    if((int)tmp1.unit%3 == (int)tmp2.unit%3) {
-        tmp = tmp1.value + tmp2.value;
-        if((int)tmp1.unit%3 == 0) {
-            switch (c1.unit){
-                case Unit::KM : tmp = tmp/(1000*100); break;
-                case Unit::M : tmp = tmp/100; break;
-                case Unit::CM : break;
-            }
-        }
-        else if((int)tmp1.unit%3 == 2) {
-            switch (c1.unit){
-                case Unit::TON : tmp = tmp/(1000*1000); break;
-                case Unit::KG : tmp = tmp/1000; break;
-                case Unit::G : break;
-            }
-        }
-        else {
-            switch (c1.unit){
-                case Unit::HOUR : tmp = tmp/(60*60); break;
-                case Unit::MIN : tmp = tmp/60; break;
-                case Unit::SEC : break;
-            }
-        }
-    }
-    else
-        throw "Invalid operation";
-    return  PhysicalNumber(tmp,  c1.unit);
-}
 
-const PhysicalNumber ariel::operator+(const PhysicalNumber &pn1) {
-    return pn1;
-}
 
-//Minus operator
-const PhysicalNumber ariel::operator-(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
-    PhysicalNumber tmp = pn2;
-    tmp.value = -tmp.value;
-    return pn1 + tmp;
-}
 
-const PhysicalNumber ariel::operator-(const PhysicalNumber &pn1) {
-    PhysicalNumber tmp = pn1;
-    tmp.value = -tmp.value;
-    return tmp;
-}
 
-//Assignment operators
-const PhysicalNumber &ariel::operator+=(PhysicalNumber &pn1, const PhysicalNumber &pn2) {
-    PhysicalNumber temp=pn1+pn2;
-    pn1=temp;
-    return pn1;
-}
-
-const PhysicalNumber &ariel::operator-=(PhysicalNumber &pn1, const PhysicalNumber &pn2) {
-    PhysicalNumber temp=pn1-pn2;
-    pn1=temp;
-    return pn1;
-}
-
-//Unary operators
-const PhysicalNumber ariel::operator++(PhysicalNumber &pn1) {
-    pn1.value=pn1.value+1;
-    return pn1;
-}
-
-const PhysicalNumber ariel::operator++(PhysicalNumber &pn1, int) {
-    return ++pn1;
-}
-
-const PhysicalNumber ariel::operator--(PhysicalNumber &pn1) {
-    pn1.value=pn1.value-1;
-    return pn1;
-}
-
-const PhysicalNumber ariel::operator--(PhysicalNumber &pn1, int) {
-    return --pn1;
-}
-
-//Relational operators
-const bool ariel::operator!=(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
-    return (!(pn1==pn2));
-}
-
-const bool ariel::operator==(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
-
-    PhysicalNumber tmp1 = PhysicalNumber::convert(pn1);
-    PhysicalNumber tmp2 = PhysicalNumber::convert(pn2);
-
-    if((int)tmp1.unit%3 == (int)tmp2.unit%3){
-        if (tmp1.value==tmp2.value) return true;
-    } else throw "Invalid input";
-    return false;
-}
-
-const bool ariel::operator>=(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
-    return (pn1>pn2||pn1==pn2);
-}
-
-const bool ariel::operator>(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
-    PhysicalNumber tmp1 = PhysicalNumber::convert(pn1);
-    PhysicalNumber tmp2 = PhysicalNumber::convert(pn2);
-
-    if((int)tmp1.unit%3 == (int)tmp2.unit%3){
-        if (tmp1.value>tmp2.value) return true;
-    } else throw "Invalid input";
-    return false;
-}
-
-const bool ariel::operator<=(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
-    return (pn2>=pn1);
-}
-
-const bool ariel::operator<(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
-    return (pn2>pn1);
-}
 
 
 
