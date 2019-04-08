@@ -5,6 +5,7 @@
  * @since 2019-02
  */
 
+
 #include <iostream>
 #include <sstream>
 using std::cout, std::endl, std::istringstream;
@@ -93,7 +94,9 @@ int main() {
 
 
 
-      .print(cout, /*show_grade=*/false);
+      .print(cout,
+/*show_grade=*/
+false);
       grade = testcase.grade();
     } else {
       testcase.print_signal(signal);
@@ -102,3 +105,4 @@ int main() {
     cout <<  "*** Grade: " << grade << " ***" << endl;
     return grade;
 }
+

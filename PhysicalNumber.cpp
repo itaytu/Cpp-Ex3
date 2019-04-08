@@ -7,6 +7,10 @@
 using namespace std;
 using namespace ariel;
 
+using namespace std;
+
+const char* units[]={"[km]","[hour]","[ton]","[m]","[min]","[kg]","[cm]","[sec]","[g]"};
+
 PhysicalNumber::PhysicalNumber(double num, Unit unit) {
     this -> unit = unit;
     this->value = num;
@@ -87,8 +91,13 @@ const ariel::PhysicalNumber PhysicalNumber::operator+(const ariel::PhysicalNumbe
             }
         }
     }
-    else
-        throw "Invalid operation";
+    else {
+        string s = "Units do not match - " ;
+        s.append(units[(int) unit]);
+        string s2 = " cannot be converted to ";
+        s2.append(units[(int) c1.unit]);
+        throw std::invalid_argument(s.append(s2));
+    }
     PhysicalNumber a(tmp,this->unit);
     return (a);
 
@@ -153,7 +162,13 @@ const bool ariel::operator==(const PhysicalNumber &pn1, const PhysicalNumber &pn
 
     if((int)tmp1.unit%3 == (int)tmp2.unit%3){
         if (tmp1.value==tmp2.value) return true;
-    } else throw "Invalid input";
+    } else {
+        string s = "Units do not match - " ;
+        s.append(units[(int) pn1.unit]);
+        string s2 = " cannot be converted to ";
+        s2.append(units[(int) pn2.unit]);
+        throw std::invalid_argument(s.append(s2));
+    }
     return false;
 }
 
@@ -167,7 +182,13 @@ const bool ariel::operator>(const PhysicalNumber &pn1, const PhysicalNumber &pn2
 
     if((int)tmp1.unit%3 == (int)tmp2.unit%3){
         if (tmp1.value>tmp2.value) return true;
-    } else throw "Invalid input";
+    } else {
+        string s = "Units do not match - " ;
+        s.append(units[(int) pn1.unit]);
+        string s2 = " cannot be converted to ";
+        s2.append(units[(int) pn2.unit]);
+        throw std::invalid_argument(s.append(s2));
+    }
     return false;
 }
 
