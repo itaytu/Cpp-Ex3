@@ -29,8 +29,8 @@ namespace ariel {
         //Minus operators Binary and Unary
         const PhysicalNumber operator- (const PhysicalNumber& pn1) ;
         const PhysicalNumber operator- () ;
-        const PhysicalNumber operator--() ;
-        const PhysicalNumber operator--(int) ;
+        PhysicalNumber& operator--() ;
+        PhysicalNumber& operator--(int) ;
         const PhysicalNumber operator-= (const PhysicalNumber& pn1) ;
 
 
