@@ -35,12 +35,12 @@ namespace ariel {
 
 
         //Comparison operators
-        friend const bool operator< (const PhysicalNumber& pn1, const PhysicalNumber& pn2);
-        friend const bool operator<= (const PhysicalNumber& pn1, const PhysicalNumber& pn2);
-        friend const bool operator> (const PhysicalNumber& pn1, const PhysicalNumber& pn2);
-        friend const bool operator>= (const PhysicalNumber& pn1, const PhysicalNumber& pn2);
-        friend const bool operator== (const PhysicalNumber& pn1, const PhysicalNumber& pn2);
-        friend const bool operator!= (const PhysicalNumber& pn1, const PhysicalNumber& pn2);
+        const bool operator< (const PhysicalNumber& pn2);
+        const bool operator<= (const PhysicalNumber& pn2);
+        const bool operator> (const PhysicalNumber& pn2);
+        const bool operator>= (const PhysicalNumber& pn2);
+        const bool operator== (const PhysicalNumber& pn2);
+        const bool operator!= (const PhysicalNumber& pn2);
     };
 }
 

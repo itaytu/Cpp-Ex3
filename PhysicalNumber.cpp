@@ -161,20 +161,20 @@ PhysicalNumber& PhysicalNumber::operator--(int) {
 }
 
 //-----------------------COMPARISON OPERATORS------------------------------
-const bool ariel::operator!=(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
-    return (!(pn1==pn2));
+const bool PhysicalNumber::operator!=(const PhysicalNumber &pn2) {
+    return (!(*this==pn2));
 }
 
-const bool ariel::operator==(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
+const bool PhysicalNumber::operator==(const PhysicalNumber &pn2) {
 
-    PhysicalNumber tmp1 = PhysicalNumber::convert(pn1);
+    PhysicalNumber tmp1 = PhysicalNumber::convert(*this);
     PhysicalNumber tmp2 = PhysicalNumber::convert(pn2);
 
     if((int)tmp1.unit%3 == (int)tmp2.unit%3){
         if (tmp1.value==tmp2.value) return true;
     } else {
         string s = "Units do not match - " ;
-        s.append(units[(int) pn1.unit]);
+        s.append(units[(int) this->unit]);
         string s2 = " cannot be converted to ";
         s2.append(units[(int) pn2.unit]);
         throw std::invalid_argument(s.append(s2));
@@ -182,19 +182,19 @@ const bool ariel::operator==(const PhysicalNumber &pn1, const PhysicalNumber &pn
     return false;
 }
 
-const bool ariel::operator>=(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
-    return (pn1>pn2||pn1==pn2);
+const bool PhysicalNumber::operator>=(const PhysicalNumber &pn2) {
+    return (*this>pn2||*this==pn2);
 }
 
-const bool ariel::operator>(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
-    PhysicalNumber tmp1 = PhysicalNumber::convert(pn1);
+const bool PhysicalNumber::operator>(const PhysicalNumber &pn2) {
+    PhysicalNumber tmp1 = PhysicalNumber::convert(*this);
     PhysicalNumber tmp2 = PhysicalNumber::convert(pn2);
 
     if((int)tmp1.unit%3 == (int)tmp2.unit%3){
         if (tmp1.value>tmp2.value) return true;
     } else {
         string s = "Units do not match - " ;
-        s.append(units[(int) pn1.unit]);
+        s.append(units[(int) this->unit]);
         string s2 = " cannot be converted to ";
         s2.append(units[(int) pn2.unit]);
         throw std::invalid_argument(s.append(s2));
@@ -202,12 +202,24 @@ const bool ariel::operator>(const PhysicalNumber &pn1, const PhysicalNumber &pn2
     return false;
 }
 
-const bool ariel::operator<=(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
-    return (pn2>=pn1);
+const bool PhysicalNumber::operator<=(const PhysicalNumber &pn2) {
+    return ((*this<pn2)||(*this==pn2));
 }
 
-const bool ariel::operator<(const PhysicalNumber &pn1, const PhysicalNumber &pn2) {
-    return (pn2>pn1);
+const bool PhysicalNumber::operator<(const PhysicalNumber &pn2) {
+    PhysicalNumber tmp1 = PhysicalNumber::convert(*this);
+    PhysicalNumber tmp2 = PhysicalNumber::convert(pn2);
+
+    if((int)tmp1.unit%3 == (int)tmp2.unit%3){
+        if (tmp1.value<tmp2.value) return true;
+    } else {
+        string s = "Units do not match - " ;
+        s.append(units[(int) this->unit]);
+        string s2 = " cannot be converted to ";
+        s2.append(units[(int) pn2.unit]);
+        throw std::invalid_argument(s.append(s2));
+    }
+    return false;
 }
 
 
