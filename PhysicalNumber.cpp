@@ -37,7 +37,10 @@ ostream &ariel::operator<<(ostream &os, const PhysicalNumber &c) {
         case Unit::HOUR : output = "[hour]"; break;
         case Unit::MIN : output = "[min]"; break;
         case Unit::SEC : output = "[sec]"; break;
-        default: throw ("Invalid input");
+        default: {
+            string error = "Invalid Input";
+            throw invalid_argument(error);
+        }
     }
     return os << c.value << output;
 }
@@ -80,7 +83,7 @@ istream &ariel::operator>>(istream &in, PhysicalNumber &c) {
 }
 
 //-----------------------PLUS OPERATOR------------------------------
- ariel::PhysicalNumber PhysicalNumber::operator+(const ariel::PhysicalNumber &c1){
+ariel::PhysicalNumber PhysicalNumber::operator+(const ariel::PhysicalNumber &c1){
     PhysicalNumber tmp1 = PhysicalNumber::convert(*this);
     PhysicalNumber tmp2 = PhysicalNumber::convert(c1);
     double tmp;
@@ -91,6 +94,7 @@ istream &ariel::operator>>(istream &in, PhysicalNumber &c) {
                 case Unit::KM : tmp = tmp/(1000*100); break;
                 case Unit::M : tmp = tmp/100; break;
                 case Unit::CM : break;
+                default: break;
             }
         }
         else if((int)tmp1.unit%3 == 2) {
@@ -98,6 +102,7 @@ istream &ariel::operator>>(istream &in, PhysicalNumber &c) {
                 case Unit::TON : tmp = tmp/(1000*1000); break;
                 case Unit::KG : tmp = tmp/1000; break;
                 case Unit::G : break;
+                default: break;
             }
         }
         else {
@@ -105,6 +110,7 @@ istream &ariel::operator>>(istream &in, PhysicalNumber &c) {
                 case Unit::HOUR : tmp = tmp/(60*60); break;
                 case Unit::MIN : tmp = tmp/60; break;
                 case Unit::SEC : break;
+                default: break;
             }
         }
     }
@@ -113,7 +119,7 @@ istream &ariel::operator>>(istream &in, PhysicalNumber &c) {
         s.append(units[(int) unit]);
         string s2 = " cannot be converted to ";
         s2.append(units[(int) c1.unit]);
-        throw std::invalid_argument(s.append(s2));
+        throw invalid_argument(s.append(s2));
     }
     PhysicalNumber a(tmp,this->unit);
     return (a);
@@ -121,11 +127,11 @@ istream &ariel::operator>>(istream &in, PhysicalNumber &c) {
 }
 
 //-----------------------UNARY AND BINARY OPERATORS------------------------------
- PhysicalNumber PhysicalNumber::operator+() {
+PhysicalNumber PhysicalNumber::operator+() {
     return *this;
 }
 
- PhysicalNumber PhysicalNumber::operator+=(const PhysicalNumber &pn1) {
+PhysicalNumber PhysicalNumber::operator+=(const PhysicalNumber &pn1) {
     *this=*this+pn1;
     return *this;
 }
@@ -136,22 +142,22 @@ PhysicalNumber& PhysicalNumber::operator++() {
 }
 
 PhysicalNumber PhysicalNumber::operator++(int) {
-    PhysicalNumber copy (*this);
+    PhysicalNumber const copy (*this);
     value++;
     return copy;
 }
 
- PhysicalNumber PhysicalNumber::operator-(const PhysicalNumber &pn1) {
+PhysicalNumber PhysicalNumber::operator-(const PhysicalNumber &pn1) {
     PhysicalNumber tmp = pn1;
     tmp.value = -tmp.value;
     return *this+tmp;
 }
 
- PhysicalNumber PhysicalNumber::operator-() {
+PhysicalNumber PhysicalNumber::operator-() {
     return PhysicalNumber(-(this->value),this->unit);
 }
 
- PhysicalNumber PhysicalNumber::operator-=(const PhysicalNumber &pn1) {
+PhysicalNumber PhysicalNumber::operator-=(const PhysicalNumber &pn1) {
     *this=*this-pn1;
     return *this;
 }
@@ -162,17 +168,17 @@ PhysicalNumber& PhysicalNumber::operator--() {
 }
 
 PhysicalNumber PhysicalNumber::operator--(int) {
-    PhysicalNumber copy(*this);
+    PhysicalNumber const copy(*this);
     value--;
     return copy;
 }
 
 //-----------------------COMPARISON OPERATORS------------------------------
- bool PhysicalNumber::operator!=(const PhysicalNumber &pn2) {
+bool PhysicalNumber::operator!=(const PhysicalNumber &pn2) {
     return (!(*this==pn2));
 }
 
- bool PhysicalNumber::operator==(const PhysicalNumber &pn2) {
+bool PhysicalNumber::operator==(const PhysicalNumber &pn2) {
 
     PhysicalNumber tmp1 = PhysicalNumber::convert(*this);
     PhysicalNumber tmp2 = PhysicalNumber::convert(pn2);
@@ -184,16 +190,16 @@ PhysicalNumber PhysicalNumber::operator--(int) {
         s.append(units[(int) this->unit]);
         string s2 = " cannot be converted to ";
         s2.append(units[(int) pn2.unit]);
-        throw std::invalid_argument(s.append(s2));
+        throw invalid_argument(s.append(s2));
     }
     return false;
 }
 
- bool PhysicalNumber::operator>=(const PhysicalNumber &pn2) {
+bool PhysicalNumber::operator>=(const PhysicalNumber &pn2) {
     return (*this>pn2||*this==pn2);
 }
 
- bool PhysicalNumber::operator>(const PhysicalNumber &pn2) {
+bool PhysicalNumber::operator>(const PhysicalNumber &pn2) {
     PhysicalNumber tmp1 = PhysicalNumber::convert(*this);
     PhysicalNumber tmp2 = PhysicalNumber::convert(pn2);
 
@@ -204,16 +210,16 @@ PhysicalNumber PhysicalNumber::operator--(int) {
         s.append(units[(int) this->unit]);
         string s2 = " cannot be converted to ";
         s2.append(units[(int) pn2.unit]);
-        throw std::invalid_argument(s.append(s2));
+        throw invalid_argument(s.append(s2));
     }
     return false;
 }
 
- bool PhysicalNumber::operator<=(const PhysicalNumber &pn2) {
+bool PhysicalNumber::operator<=(const PhysicalNumber &pn2) {
     return ((*this<pn2)||(*this==pn2));
 }
 
- bool PhysicalNumber::operator<(const PhysicalNumber &pn2) {
+bool PhysicalNumber::operator<(const PhysicalNumber &pn2) {
     PhysicalNumber tmp1 = PhysicalNumber::convert(*this);
     PhysicalNumber tmp2 = PhysicalNumber::convert(pn2);
 
@@ -224,7 +230,7 @@ PhysicalNumber PhysicalNumber::operator--(int) {
         s.append(units[(int) this->unit]);
         string s2 = " cannot be converted to ";
         s2.append(units[(int) pn2.unit]);
-        throw std::invalid_argument(s.append(s2));
+        throw invalid_argument(s.append(s2));
     }
     return false;
 }
@@ -248,7 +254,10 @@ PhysicalNumber PhysicalNumber::convert(PhysicalNumber pn) {
         case Unit::MIN : tmp = pn.value*60; pn.unit= Unit::SEC; break;
         case Unit::SEC : tmp = pn.value; break;
 
-        default: throw ("Invalid input");
+        default: {
+            string error = "Invalid Input";
+            throw invalid_argument(error);
+        }
     }
     pn.value = tmp;
     return pn;
