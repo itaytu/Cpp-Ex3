@@ -47,8 +47,11 @@ istream &ariel::operator>>(istream &in, PhysicalNumber &c) {
     string tmp;
     in >> tmp;
     size_t index = tmp.find_first_of('[');
-    if(index == string::npos) {
-        throw "Invalid input";
+    size_t index2 = tmp.find_first_of(']');
+    if(index == string::npos || index2 == string::npos || index == 0 || index2 == 0) {
+/*        string s = "Invalid Input" ;
+        throw std::invalid_argument(s);*/
+        return in;
     }
     string value = tmp.substr(0, index);
     string unit = tmp.substr(index, tmp.length());
@@ -67,13 +70,17 @@ istream &ariel::operator>>(istream &in, PhysicalNumber &c) {
     else if(unit.compare("[min]") == 0 ) c.unit = Unit::MIN;
     else if(unit.compare("[sec]") == 0) c.unit = Unit::SEC;
 
-    else throw "Invalid Unit";
+    else {
+/*        string s = "Invalid Input" ;
+        throw std::invalid_argument(s);*/
+        return in;
+    }
 
     return in;
 }
 
 //-----------------------PLUS OPERATOR------------------------------
-const ariel::PhysicalNumber PhysicalNumber::operator+(const ariel::PhysicalNumber &c1){
+ ariel::PhysicalNumber PhysicalNumber::operator+(const ariel::PhysicalNumber &c1){
     PhysicalNumber tmp1 = PhysicalNumber::convert(*this);
     PhysicalNumber tmp2 = PhysicalNumber::convert(c1);
     double tmp;
@@ -114,11 +121,11 @@ const ariel::PhysicalNumber PhysicalNumber::operator+(const ariel::PhysicalNumbe
 }
 
 //-----------------------UNARY AND BINARY OPERATORS------------------------------
-const PhysicalNumber PhysicalNumber::operator+() {
+ PhysicalNumber PhysicalNumber::operator+() {
     return *this;
 }
 
-const PhysicalNumber PhysicalNumber::operator+=(const PhysicalNumber &pn1) {
+ PhysicalNumber PhysicalNumber::operator+=(const PhysicalNumber &pn1) {
     *this=*this+pn1;
     return *this;
 }
@@ -128,23 +135,23 @@ PhysicalNumber& PhysicalNumber::operator++() {
     return *this;
 }
 
-PhysicalNumber& PhysicalNumber::operator++(int) {
-    PhysicalNumber copy = *this;
+PhysicalNumber PhysicalNumber::operator++(int) {
+    PhysicalNumber copy (*this);
     value++;
     return copy;
 }
 
-const PhysicalNumber PhysicalNumber::operator-(const PhysicalNumber &pn1) {
+ PhysicalNumber PhysicalNumber::operator-(const PhysicalNumber &pn1) {
     PhysicalNumber tmp = pn1;
     tmp.value = -tmp.value;
     return *this+tmp;
 }
 
-const PhysicalNumber PhysicalNumber::operator-() {
+ PhysicalNumber PhysicalNumber::operator-() {
     return PhysicalNumber(-(this->value),this->unit);
 }
 
-const PhysicalNumber PhysicalNumber::operator-=(const PhysicalNumber &pn1) {
+ PhysicalNumber PhysicalNumber::operator-=(const PhysicalNumber &pn1) {
     *this=*this-pn1;
     return *this;
 }
@@ -154,18 +161,18 @@ PhysicalNumber& PhysicalNumber::operator--() {
     return *this;
 }
 
-PhysicalNumber& PhysicalNumber::operator--(int) {
-    PhysicalNumber copy = *this;
+PhysicalNumber PhysicalNumber::operator--(int) {
+    PhysicalNumber copy(*this);
     value--;
     return copy;
 }
 
 //-----------------------COMPARISON OPERATORS------------------------------
-const bool PhysicalNumber::operator!=(const PhysicalNumber &pn2) {
+ bool PhysicalNumber::operator!=(const PhysicalNumber &pn2) {
     return (!(*this==pn2));
 }
 
-const bool PhysicalNumber::operator==(const PhysicalNumber &pn2) {
+ bool PhysicalNumber::operator==(const PhysicalNumber &pn2) {
 
     PhysicalNumber tmp1 = PhysicalNumber::convert(*this);
     PhysicalNumber tmp2 = PhysicalNumber::convert(pn2);
@@ -182,11 +189,11 @@ const bool PhysicalNumber::operator==(const PhysicalNumber &pn2) {
     return false;
 }
 
-const bool PhysicalNumber::operator>=(const PhysicalNumber &pn2) {
+ bool PhysicalNumber::operator>=(const PhysicalNumber &pn2) {
     return (*this>pn2||*this==pn2);
 }
 
-const bool PhysicalNumber::operator>(const PhysicalNumber &pn2) {
+ bool PhysicalNumber::operator>(const PhysicalNumber &pn2) {
     PhysicalNumber tmp1 = PhysicalNumber::convert(*this);
     PhysicalNumber tmp2 = PhysicalNumber::convert(pn2);
 
@@ -202,11 +209,11 @@ const bool PhysicalNumber::operator>(const PhysicalNumber &pn2) {
     return false;
 }
 
-const bool PhysicalNumber::operator<=(const PhysicalNumber &pn2) {
+ bool PhysicalNumber::operator<=(const PhysicalNumber &pn2) {
     return ((*this<pn2)||(*this==pn2));
 }
 
-const bool PhysicalNumber::operator<(const PhysicalNumber &pn2) {
+ bool PhysicalNumber::operator<(const PhysicalNumber &pn2) {
     PhysicalNumber tmp1 = PhysicalNumber::convert(*this);
     PhysicalNumber tmp2 = PhysicalNumber::convert(pn2);
 
