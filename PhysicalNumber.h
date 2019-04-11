@@ -19,28 +19,28 @@ namespace ariel {
 
 
         //Plus operators Binary and Unary
-        const PhysicalNumber operator+ (const PhysicalNumber& pn1) ;
-        const PhysicalNumber operator+ () ;
+        PhysicalNumber operator+ (const PhysicalNumber& pn1) ;
+        PhysicalNumber operator+ () ;
         PhysicalNumber& operator++();
-        PhysicalNumber& operator++(int) ;
-        const PhysicalNumber operator+= (const PhysicalNumber& pn1) ;
+        PhysicalNumber operator++(int) ;
+        PhysicalNumber operator+= (const PhysicalNumber& pn1) ;
 
 
         //Minus operators Binary and Unary
-        const PhysicalNumber operator- (const PhysicalNumber& pn1) ;
-        const PhysicalNumber operator- () ;
+        PhysicalNumber operator- (const PhysicalNumber& pn1) ;
+        PhysicalNumber operator- () ;
         PhysicalNumber& operator--() ;
-        PhysicalNumber& operator--(int) ;
-        const PhysicalNumber operator-= (const PhysicalNumber& pn1) ;
+        PhysicalNumber operator--(int) ;
+        PhysicalNumber operator-= (const PhysicalNumber& pn1) ;
 
 
         //Comparison operators
-        const bool operator< (const PhysicalNumber& pn2);
-        const bool operator<= (const PhysicalNumber& pn2);
-        const bool operator> (const PhysicalNumber& pn2);
-        const bool operator>= (const PhysicalNumber& pn2);
-        const bool operator== (const PhysicalNumber& pn2);
-        const bool operator!= (const PhysicalNumber& pn2);
+        bool operator< (const PhysicalNumber& pn2);
+        bool operator<= (const PhysicalNumber& pn2);
+        bool operator> (const PhysicalNumber& pn2);
+        bool operator>= (const PhysicalNumber& pn2);
+        bool operator== (const PhysicalNumber& pn2);
+        bool operator!= (const PhysicalNumber& pn2);
     };
 }
 
