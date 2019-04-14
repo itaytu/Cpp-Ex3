@@ -22,7 +22,7 @@ namespace ariel {
         PhysicalNumber operator+ (const PhysicalNumber& pn1) ;
         PhysicalNumber operator+ () ;
         PhysicalNumber& operator++();
-        const PhysicalNumber operator++(int) ;
+        PhysicalNumber operator++(int) ;
         PhysicalNumber operator+= (const PhysicalNumber& pn1) ;
 
 
@@ -30,7 +30,7 @@ namespace ariel {
         PhysicalNumber operator- (const PhysicalNumber& pn1) ;
         PhysicalNumber operator- () ;
         PhysicalNumber& operator--() ;
-        const PhysicalNumber operator--(int) ;
+        PhysicalNumber operator--(int) ;
         PhysicalNumber operator-= (const PhysicalNumber& pn1) ;
 
 
