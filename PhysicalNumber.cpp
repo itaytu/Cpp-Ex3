@@ -48,30 +48,21 @@ ostream &ariel::operator<<(ostream &os, const PhysicalNumber &c) {
 //-----------------------INPUT OPERATOR------------------------------
 istream &ariel::operator>>(istream &in, PhysicalNumber &c) {
     string tmp;
-    in >> tmp;
-    size_t index = tmp.find_first_of('[');
-    size_t index2 = tmp.find_first_of(']');
-    if(index == string::npos || index2 == string::npos || index == 0 || index2 == 0) {
-/*        string s = "Invalid Input" ;
-        throw std::invalid_argument(s);*/
-        return in;
-    }
-    string value = tmp.substr(0, index);
-    string unit = tmp.substr(index, tmp.length());
-    transform(unit.begin(), unit.end(), unit.begin(), ::tolower);
-    c.value = stod(value);
+    double value;
+    in >> value >> tmp;
+    transform(tmp.begin(), tmp.end(), tmp.begin(), ::tolower);
 
-    if(unit.compare("[km]") == 0 ) c.unit = Unit::KM;
-    else if(unit.compare("[m]") == 0 ) c.unit = Unit::M;
-    else if(unit.compare("[cm]") == 0 ) c.unit = Unit::CM;
+    if(tmp.compare("[km]") == 0 ) c.unit = Unit::KM;
+    else if(tmp.compare("[m]") == 0 ) c.unit = Unit::M;
+    else if(tmp.compare("[cm]") == 0 ) c.unit = Unit::CM;
 
-    else if(unit.compare("[ton]") == 0 ) c.unit = Unit::TON;
-    else if(unit.compare("[kg]") == 0 ) c.unit = Unit::KG;
-    else if(unit.compare("[g]") == 0 ) c.unit = Unit::G;
+    else if(tmp.compare("[ton]") == 0 ) c.unit = Unit::TON;
+    else if(tmp.compare("[kg]") == 0 ) c.unit = Unit::KG;
+    else if(tmp.compare("[g]") == 0 ) c.unit = Unit::G;
 
-    else if(unit.compare("[hour]") == 0 ) c.unit = Unit::HOUR;
-    else if(unit.compare("[min]") == 0 ) c.unit = Unit::MIN;
-    else if(unit.compare("[sec]") == 0) c.unit = Unit::SEC;
+    else if(tmp.compare("[hour]") == 0 ) c.unit = Unit::HOUR;
+    else if(tmp.compare("[min]") == 0 ) c.unit = Unit::MIN;
+    else if(tmp.compare("[sec]") == 0) c.unit = Unit::SEC;
 
     else {
 /*        string s = "Invalid Input" ;
@@ -79,6 +70,7 @@ istream &ariel::operator>>(istream &in, PhysicalNumber &c) {
         return in;
     }
 
+    c.value = value;
     return in;
 }
 
