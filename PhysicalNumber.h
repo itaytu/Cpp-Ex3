@@ -5,10 +5,10 @@
 namespace ariel {
     class PhysicalNumber {
     private:
-        static PhysicalNumber convert(PhysicalNumber pn);
-    public:
         double value;
         Unit unit;
+        static PhysicalNumber convert(PhysicalNumber pn);
+    public:
         PhysicalNumber(double num, Unit unit);
         PhysicalNumber(const PhysicalNumber& pn);
 
@@ -22,7 +22,7 @@ namespace ariel {
         PhysicalNumber operator+ (const PhysicalNumber& pn1) ;
         PhysicalNumber operator+ () ;
         PhysicalNumber& operator++();
-        PhysicalNumber operator++(int) ;
+        const PhysicalNumber operator++(int) ;
         PhysicalNumber operator+= (const PhysicalNumber& pn1) ;
 
 
@@ -30,7 +30,7 @@ namespace ariel {
         PhysicalNumber operator- (const PhysicalNumber& pn1) ;
         PhysicalNumber operator- () ;
         PhysicalNumber& operator--() ;
-        PhysicalNumber operator--(int) ;
+        const PhysicalNumber operator--(int) ;
         PhysicalNumber operator-= (const PhysicalNumber& pn1) ;
 
 
@@ -41,6 +41,12 @@ namespace ariel {
         bool operator>= (const PhysicalNumber& pn2);
         bool operator== (const PhysicalNumber& pn2);
         bool operator!= (const PhysicalNumber& pn2);
+
+        void setUnit(Unit unit);
+        Unit getUnit();
+
+        void setValue(double value);
+        double getValue();
     };
 }
 

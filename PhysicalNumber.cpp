@@ -52,25 +52,23 @@ istream &ariel::operator>>(istream &in, PhysicalNumber &c) {
     in >> value >> tmp;
     transform(tmp.begin(), tmp.end(), tmp.begin(), ::tolower);
 
-    if(tmp.compare("[km]") == 0 ) c.unit = Unit::KM;
-    else if(tmp.compare("[m]") == 0 ) c.unit = Unit::M;
-    else if(tmp.compare("[cm]") == 0 ) c.unit = Unit::CM;
+    if(tmp == "[km]" ) c.setUnit(Unit::KM);
+    else if(tmp == "[m]" ) c.setUnit(Unit::M);
+    else if(tmp == "[cm]" ) c.setUnit(Unit::CM);
 
-    else if(tmp.compare("[ton]") == 0 ) c.unit = Unit::TON;
-    else if(tmp.compare("[kg]") == 0 ) c.unit = Unit::KG;
-    else if(tmp.compare("[g]") == 0 ) c.unit = Unit::G;
+    else if(tmp == "[ton]" ) c.setUnit(Unit::TON);
+    else if(tmp == "[kg]" ) c.setUnit(Unit::KG);
+    else if(tmp == "[g]" ) c.setUnit(Unit::G);
 
-    else if(tmp.compare("[hour]") == 0 ) c.unit = Unit::HOUR;
-    else if(tmp.compare("[min]") == 0 ) c.unit = Unit::MIN;
-    else if(tmp.compare("[sec]") == 0) c.unit = Unit::SEC;
+    else if(tmp == "[hour]" ) c.setUnit(Unit::HOUR);
+    else if(tmp == "[min]" ) c.setUnit(Unit::MIN);
+    else if(tmp == "[sec]") c.setUnit(Unit::SEC);
 
     else {
-/*        string s = "Invalid Input" ;
-        throw std::invalid_argument(s);*/
         return in;
     }
 
-    c.value = value;
+    c.setValue(value);
     return in;
 }
 
@@ -141,7 +139,7 @@ PhysicalNumber PhysicalNumber::operator++(int) {
 
 PhysicalNumber PhysicalNumber::operator-(const PhysicalNumber &pn1) {
     PhysicalNumber tmp = pn1;
-    tmp.value = -tmp.value;
+    tmp.setValue(-tmp.value);
     return *this+tmp;
 }
 
@@ -234,16 +232,16 @@ bool PhysicalNumber::operator<(const PhysicalNumber &pn2) {
 PhysicalNumber PhysicalNumber::convert(PhysicalNumber pn) {
     double tmp;
     switch (pn.unit){
-        case Unit::KM : tmp = pn.value*1000*100; pn.unit= Unit::CM; break;
-        case Unit::M : tmp = pn.value*100; pn.unit= Unit::CM; break;
+        case Unit::KM : tmp = pn.value*1000*100; pn.setUnit(Unit::CM); break;
+        case Unit::M : tmp = pn.value*100; pn.setUnit(Unit::CM); break;
         case Unit::CM : tmp = pn.value; break;
 
-        case Unit::TON : tmp = pn.value*1000*1000; pn.unit= Unit::G; break;
-        case Unit::KG : tmp = pn.value*1000; pn.unit= Unit::G; break;
+        case Unit::TON : tmp = pn.value*1000*1000; pn.setUnit(Unit::G); break;
+        case Unit::KG : tmp = pn.value*1000; pn.setUnit(Unit::G); break;
         case Unit::G : tmp = pn.value; break;
 
-        case Unit::HOUR : tmp = pn.value*60*60; pn.unit= Unit::SEC; break;
-        case Unit::MIN : tmp = pn.value*60; pn.unit= Unit::SEC; break;
+        case Unit::HOUR : tmp = pn.value*60*60; pn.setUnit(Unit::SEC); break;
+        case Unit::MIN : tmp = pn.value*60; pn.setUnit(Unit::SEC); break;
         case Unit::SEC : tmp = pn.value; break;
 
         default: {
@@ -251,8 +249,24 @@ PhysicalNumber PhysicalNumber::convert(PhysicalNumber pn) {
             throw invalid_argument(error);
         }
     }
-    pn.value = tmp;
+    pn.setValue(tmp);
     return pn;
+}
+
+void PhysicalNumber::setUnit(Unit unit) {
+    this->unit = unit;
+}
+
+Unit PhysicalNumber::getUnit() {
+    return this->unit;
+}
+
+void PhysicalNumber::setValue(double value) {
+    this->value = value;
+}
+
+double PhysicalNumber::getValue() {
+    return this->value;
 }
 
 
