@@ -11,13 +11,13 @@ using namespace std;
 
 const char* units[]={"[km]","[hour]","[ton]","[m]","[min]","[kg]","[cm]","[sec]","[g]"};
 
-//---------------------CONSTRUCTOR-----------------------
+//---------------------COPY CONSTRUCTOR-------------------
 PhysicalNumber::PhysicalNumber(const PhysicalNumber &pn) {
     this->value = pn.value;
     this->unit = pn.unit;
 }
 
-//---------------------COPY CONSTRUCTOR-------------------
+//---------------------CONSTRUCTOR-----------------------
 PhysicalNumber::PhysicalNumber(double num, Unit unit) {
     this -> unit = unit;
     this->value = num;
